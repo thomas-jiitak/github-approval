@@ -29,4 +29,5 @@ jobs:
         pip install -r requirements.txt
     - name: Create issue
       run: |
+        ls
         python github_issue.py
