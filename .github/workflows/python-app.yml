@@ -19,11 +19,12 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set issues
-      uses: thomasvjoseph/github-issues@v1.0.0
+      uses: thomasvjoseph/github-issues@v0.0.1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        issue-title: "New issue"
-        issue-body: "This is a new issue"
-        issue-labels: "bug,help wanted"
+        title: "New issue"
+        labels: "bug,help wanted"
+        body: "This is a new issue"
+        
 
    
