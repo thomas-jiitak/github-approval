@@ -18,8 +18,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set issues
-      uses: thomasvjoseph/github-issues@v0.0.4
+    - name: Github Issue Creator
+      uses: thomasvjoseph/github-issues@v.0.0.4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         title: "New issue"
