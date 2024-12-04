@@ -1,45 +1,37 @@
-import requests
 import os
-import sys
+from github import Github
 
-# Retrieve the GitHub token from GitHub Actions context
-token = os.getenv("GITHUB_TOKEN")
+# Extracting all the input from environment variables
+title = os.getenv('INPUT_TITLE')
+token = os.getenv('GITHUB_TOKEN')  # Using the GITHUB_TOKEN provided by GitHub Actions
+labels = os.getenv('INPUT_LABELS')
+assignees = os.getenv('INPUT_ASSIGNEES')
+body = os.getenv('INPUT_BODY')
 
-if not token:
-    print("Error: GitHub token not found!")
-    sys.exit(1)
+# If labels are provided, split by ',' to make it a list
+if labels and labels != '':
+    labels = labels.split(',')
+else:
+    labels = []  # Default to an empty list if no labels
 
-headers = {
-    "Authorization": f"Bearer {token}",
-    "Accept": "application/vnd.github.v3+json"
-}
+# If assignees are provided, split by ',' to make it a list
+if assignees and assignees != '':
+    assignees = assignees.split(',')
+else:
+    assignees = []  # Default to an empty list if no assignees
 
-data = {
-    "title": "Testing issue from GitHub Action",
-    "body": "This is a test issue created via GitHub Action.",
-}
+# Use the GitHub token to authenticate
+github = Github(token)
 
-username = os.getenv("GITHUB_ACTOR")  # Automatically gets the username of the action runner
-repository = os.getenv("GITHUB_REPOSITORY")  # Automatically gets the repository in the form 'owner/repository'
+# GITHUB_REPOSITORY is automatically available in GitHub Actions
+repo = github.get_repo(os.getenv('GITHUB_REPOSITORY'))
 
-# Check if the repository and username are valid
-if not username or not repository:
-    print("Error: GitHub username or repository not found!")
-    sys.exit(1)
+# Create the issue
+issue = repo.create_issue(
+    title=title,
+    body=body,
+    assignees=assignees,
+    labels=labels
+)
 
-url = f"https://api.github.com/repos/{repository}/issues"  # Using the repository in 'owner/repository' format
-
-try:
-    response = requests.post(url, headers=headers, json=data)
-    response.raise_for_status()  # Raise an exception for HTTP errors
-
-    if response.status_code == 201:
-        print("Issue created successfully!")
-        print("Issue URL:", response.json().get("html_url"))
-    else:
-        print(f"Failed to create issue. Status code: {response.status_code}")
-        print("Response:", response.text)
-
-except requests.RequestException as e:
-    print(f"Request failed: {e}")
-    sys.exit(1)
+print(f"Issue created successfully: {issue.html_url}")
