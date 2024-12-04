@@ -21,9 +21,10 @@ jobs:
       uses: thomasvjoseph/github-issues@v0.0.6
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        INPUT_TITLE: "New issue"
-        INPUT_LABELS: "bug,help wanted   s "
-        INPUT_BODY: "This is a new issue"
+        INPUT_TITLE: "Test Issue"
+        INPUT_BODY: "This is a test issue created via GitHub Action."
+        INPUT_LABELS: "bug,help wanted"
+        INPUT_ASSIGNEES: ""  # Leave blank to avoid the 422 error
         
 
    
