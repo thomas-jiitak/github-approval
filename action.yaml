@@ -1,0 +1,32 @@
+name: 'Github Issue Creator'
+description: 'This action creates an issue based on user inputs'
+author: 'Thomas Joseph'
+
+inputs:
+  title: 
+    required: true
+    description: Title of the issue
+  token: 
+    required: true
+    description: Token of the user that creates the issue
+  labels:
+    required: false
+    default: ''
+    description: Labels of the issue
+  assignees: 
+    required: false
+    description: Assignees of the issue
+    default: '' 
+  body: 
+    required: false
+    default: ''
+    description: Body of the issue
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
+# for publishing purposes
+branding: #generates a logo for our action
+  icon: arrow-down #icon of the image
+  color: green # background color of the logo of our action
