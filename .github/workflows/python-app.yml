@@ -23,7 +23,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         title: "New issue"
-        labels: "bug,help wanted"
+        labels: "bug,help wanted   s "
         body: "This is a new issue"
         
 
