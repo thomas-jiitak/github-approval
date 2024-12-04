@@ -18,12 +18,12 @@ jobs:
     steps:
 
     - name: Github Issue Creator
-      uses: thomasvjoseph/github-issues@v0.0.5
+      uses: thomasvjoseph/github-issues@v0.0.6
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        title: "New issue"
-        labels: "bug,help wanted   s "
-        body: "This is a new issue"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        INPUT_TITLE: "New issue"
+        INPUT_LABELS: "bug,help wanted   s "
+        INPUT_BODY: "This is a new issue"
         
 
    
