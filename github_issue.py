@@ -18,11 +18,11 @@ if labels and labels != '':
 else:
     labels = []  # Default to an empty list if no labels
 
-# If assignees are provided, split by ',' to make it a list
-if assignees and assignees != '':
-    assignees = assignees.split(',')
+# Validate and filter assignees
+if assignees:
+    valid_assignees = [user.strip() for user in assignees.split(',') if user.strip()]
 else:
-    assignees = []  # Default to an empty list if no assignees
+    valid_assignees = []  # Default to an empty list if no assignees
 
 # Use the GitHub token to authenticate
 github = Github(token)
@@ -31,11 +31,14 @@ github = Github(token)
 repo = github.get_repo(os.getenv('GITHUB_REPOSITORY'))
 
 # Create the issue
-issue = repo.create_issue(
-    title=title,
-    body=body,
-    assignees=assignees,
-    labels=labels
-)
-
-print(f"Issue created successfully: {issue.html_url}")
+try:
+    issue = repo.create_issue(
+        title=title,
+        body=body,
+        assignees=valid_assignees,
+        labels=labels
+    )
+    print(f"Issue created successfully: {issue.html_url}")
+except Exception as e:
+    print(f"Error creating issue: {e}")
+    raise
