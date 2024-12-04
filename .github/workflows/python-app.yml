@@ -16,10 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
 
     - name: Github Issue Creator
-      uses: thomasvjoseph/github-issues@v.0.0.4
+      uses: thomasvjoseph/github-issues@v0.0.5
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         title: "New issue"
