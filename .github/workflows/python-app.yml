@@ -18,7 +18,7 @@ jobs:
     steps:
 
     - name: Github Issue Creator
-      uses: thomasvjoseph/create-github-issue@v0.1.0
+      uses: thomasvjoseph/create-github-issue@v1.0.0
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         INPUT_TITLE: "Test Issue"
