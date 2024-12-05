@@ -18,13 +18,12 @@ jobs:
     steps:
 
     - name: Github Issue Creator
-      uses: thomasvjoseph/github-issues@v0.0.7
+      uses: thomasvjoseph/github-issues@v0.0.8
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         INPUT_TITLE: "Test Issue"
         INPUT_BODY: "This is a test issue created via GitHub Action."
         INPUT_LABELS: "bug,help wanted"
-        INPUT_ASSIGNEES: "" 
         
 
    
