@@ -2,6 +2,7 @@ import os
 from github import Github
 import time
 from datetime import datetime, timedelta
+import threading
 
 # Environment variables
 repo_name = os.getenv('GITHUB_REPOSITORY')
@@ -33,6 +34,18 @@ try:
     timeout = timedelta(minutes=1)
     start_time = datetime.now()
 
+    # Shared variable to capture user input
+    user_input = None
+
+    # Function to capture user input
+    def capture_input():
+        global user_input
+        user_input = input("\nType your approval ('yes' or 'no'): ")
+
+    # Start a thread for capturing user input
+    print("Starting input thread...")
+    input_thread = threading.Thread(target=capture_input)
+    input_thread.daemon = True  # Ensure the thread exits when the main program exits
     input_thread.start()
 
     print("Monitoring comments on the issue...")
