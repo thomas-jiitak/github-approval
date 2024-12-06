@@ -42,3 +42,21 @@ try:
 except Exception as e:
     print(f"Error creating issue: {e}")
     raise
+
+# Poll the issue's comments to check for the keyword "yes"
+print("Waiting for the keyword 'yes' in issue comments...")
+
+while True:
+    try:
+        # Refresh the issue comments
+        comments = issue.get_comments()
+        for comment in comments:
+            if "yes" in comment.body.lower():  # Check for the keyword "yes" (case-insensitive)
+                print("Keyword 'yes' found in issue comments. Proceeding to next workflow...")
+                # Add a success marker or trigger the next step here
+                exit(0)
+        print("Keyword not found yet. Checking again in 30 seconds...")
+        time.sleep(30)  # Poll every 30 seconds
+    except Exception as e:
+        print(f"Error while polling issue comments: {e}")
+        raise
