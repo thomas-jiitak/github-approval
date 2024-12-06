@@ -33,38 +33,37 @@ try:
     timeout = timedelta(minutes=1)
     start_time = datetime.now()
 
+    input_thread.start()
+
     print("Monitoring comments on the issue...")
+
     while True:
-        # Refresh issue details
-        issue = repo.get_issue(issue.number)
-
-        # Fetch comments
-        comments = issue.get_comments()
-        yes_found = any("yes" in comment.body.lower().strip() for comment in comments)
-        no_found = any("no" in comment.body.lower().strip() for comment in comments)
-
-        # If "yes" or "no" is found, close the issue
-        if yes_found or no_found:
-            print(f"Found {'yes' if yes_found else 'no'} comment. Closing issue...")
-            issue.edit(state="closed")
-            
-            if yes_found:
-                print("Proceeding to the next workflow step...")
-                exit(0)
-            # If "no" is found, close the issue and stop the workflow
-            if no_found:
-                print("Found 'no' comment. Closing issue and stopping workflow...")
-                issue.edit(state="closed")
-                exit(1)  # Exit with failure status to stop the workflow
-
-        # If no comments, check the timeout
+        # Check for timeout
         if datetime.now() - start_time >= timeout:
-            print("No comments within 5 minutes. Closing issue...")
-            issue.edit(state="closed")
-            exit(1)
+            print("\nTime's up! No comments received. Closing the issue.")
+            print("Issue closed.")
+            exit(1)  # Exit with failure status to stop the workflow
 
-        print("No relevant comments yet. Rechecking in 30 seconds...")
-        time.sleep(30)
+        # Continuously display the message
+        print("Pending approval, yes or no for approval...", end="\r", flush=True)
+
+        # Check for user input
+        if user_input:
+            user_input = user_input.strip().lower()
+            if user_input == "yes":
+                print("\nApproval received: 'yes'. Closing the issue.")
+                print("Issue closed.")
+                exit(0)  # Exit with success status to continue the workflow
+            elif user_input == "no":
+                print("\nApproval denied: 'no'. Closing the issue.")
+                print("Issue closed.")
+                exit(1)  # Exit with failure status to stop the workflow
+            else:
+                print("\nInvalid input. Please type 'yes' or 'no'.")
+                user_input = None  # Reset input for another attempt
+
+        # Sleep briefly to reduce CPU usage
+        time.sleep(0.5)
 
 except Exception as e:
     print(f"Error: {e}")
