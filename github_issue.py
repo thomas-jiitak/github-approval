@@ -30,7 +30,7 @@ try:
     print(f"Issue created successfully: {issue.html_url}")
 
     # Define the timeout for no comments
-    timeout = timedelta(minutes=5)
+    timeout = timedelta(minutes=1)
     start_time = datetime.now()
 
     print("Monitoring comments on the issue...")
