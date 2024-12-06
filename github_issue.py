@@ -2,37 +2,45 @@ import os
 from github import Github
 import time
 from datetime import datetime, timedelta
-import threading
 
 # Environment variables
-repo_name = os.getenv('GITHUB_REPOSITORY')
+title = os.getenv('INPUT_TITLE') 
 token = os.getenv('GITHUB_TOKEN')
-title = os.getenv('INPUT_TITLE')
+labels = os.getenv('INPUT_LABELS')
+assignees = os.getenv('INPUT_ASSIGNEES')
 body = os.getenv('INPUT_BODY')
-labels = os.getenv('INPUT_LABELS').split(',')
-assignees = os.getenv('INPUT_ASSIGNEES', '').split(',')
 
-print(f"Repository: {repo_name}")
-print(f"Token provided: {'Yes' if token else 'No'}")
+# Validate title
+if not title:
+    raise ValueError("Title is missing. Please provide a valid title for the issue.")
 
+# If labels are provided, split by ',' to make it a list
+if labels:
+    labels = [label.strip() for label in labels.split(',') if label.strip()]
+else:
+    labels = []
+
+# Validate and filter assignees
+if assignees:
+    assignees = [assignee.strip() for assignee in assignees.split(',') if assignee.strip()]
+else:
+    assignees = []
+
+# Authenticate using GitHub token
+github = Github(token)
+repo = github.get_repo(os.getenv('GITHUB_REPOSITORY'))  # Format: "owner/repo"
+
+# Create the issue
 try:
-    # Authenticate
-    github = Github(token)
-    repo = github.get_repo(repo_name)
-    print(f"Successfully accessed repository: {repo.full_name}")
-
-    # Create the issue
     issue = repo.create_issue(
         title=title,
         body=body,
-        assignees=[a for a in assignees if a],
-        labels=[l for l in labels if l]
+        assignees=assignees,
+        labels=labels
     )
     print(f"Issue created successfully: {issue.html_url}")
 
-###################################################################
-
-    # Define the timeout for no comments
+    # Define timeout for no comments
     timeout = timedelta(minutes=5)
     start_time = datetime.now()
 
@@ -77,7 +85,6 @@ try:
 
         # Sleep briefly to reduce API usage
         time.sleep(10)
-
 
 except Exception as e:
     print(f"Error: {e}")
