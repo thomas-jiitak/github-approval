@@ -51,9 +51,11 @@ try:
             if yes_found:
                 print("Proceeding to the next workflow step...")
                 exit(0)
-            else:
-                print("No further action for 'no' comment.")
-                exit(0)
+            # If "no" is found, close the issue and stop the workflow
+            if no_found:
+                print("Found 'no' comment. Closing issue and stopping workflow...")
+                issue.edit(state="closed")
+                exit(1)  # Exit with failure status to stop the workflow
 
         # If no comments, check the timeout
         if datetime.now() - start_time >= timeout:
