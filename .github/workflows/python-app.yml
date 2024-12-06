@@ -38,7 +38,5 @@ jobs:
             python github_issue.py
 
       - name: Hello
-        uses: daniyalj/ga-hello-world@v1
-        with:
-          who-to-greet: 'Mona the Octocat'
+        run: echo "Hello, World!"
             

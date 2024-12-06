@@ -5,18 +5,13 @@ import time
 # Environment variables
 repo_name = os.getenv('GITHUB_REPOSITORY')
 token = os.getenv('GITHUB_TOKEN')
-title = os.getenv('INPUT_TITLE', 'Bug Report')
-body = os.getenv('INPUT_BODY', 'No issue description provided.')
-labels = os.getenv('INPUT_LABELS', 'bug').split(',')
+title = os.getenv('INPUT_TITLE')
+body = os.getenv('INPUT_BODY')
+labels = os.getenv('INPUT_LABELS').split(',')
 assignees = os.getenv('INPUT_ASSIGNEES', '').split(',')
 
-# Debugging outputs
 print(f"Repository: {repo_name}")
 print(f"Token provided: {'Yes' if token else 'No'}")
-print(f"Title: {title}")
-print(f"Body: {body}")
-print(f"Labels: {labels}")
-print(f"Assignees: {assignees}")
 
 try:
     # Authenticate
@@ -36,21 +31,23 @@ try:
     # Polling for "yes" comments and issue closure
     print("Waiting for the issue to be closed and checking comments...")
     while True:
-        # Refresh the issue details
+        # Refresh issue details
         issue = repo.get_issue(issue.number)
+        print(f"Issue state: {issue.state}")
 
         # Check for "yes" in comments
         comments = issue.get_comments()
+        for comment in comments:
+            print(f"Comment: {comment.body}")
         yes_found = any("yes" in comment.body.lower() for comment in comments)
 
-        # Check if the issue is closed
         if issue.state == "closed":
+            print(f"Issue closed. 'Yes' found: {yes_found}")
             if yes_found:
-                print("Issue closed with a 'yes' comment. Proceeding to the next workflow step...")
-                # Trigger the next step or add logic here
+                print("Proceeding to the next workflow step...")
                 exit(0)
             else:
-                print("Issue closed without a 'yes' comment. Exiting...")
+                print("No 'yes' found. Exiting...")
                 exit(1)
 
         print("Issue still open. Rechecking in 30 seconds...")
