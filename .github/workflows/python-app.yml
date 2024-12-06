@@ -38,5 +38,5 @@ jobs:
             python github_issue.py
 
       - name: Hello
-        run: echo "Hello, World! it's No"
+        run: echo "Hello, World! it's No test"
             
