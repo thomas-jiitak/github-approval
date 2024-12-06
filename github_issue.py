@@ -1,6 +1,7 @@
 import os
 from github import Github
 import time
+from datetime import datetime, timedelta
 
 # Environment variables
 repo_name = os.getenv('GITHUB_REPOSITORY')
@@ -28,32 +29,40 @@ try:
     )
     print(f"Issue created successfully: {issue.html_url}")
 
-    # Polling for "yes" comments and issue closure
-    print("Waiting for the issue to be closed and checking comments...")
+    # Define the timeout for no comments
+    timeout = timedelta(minutes=5)
+    start_time = datetime.now()
+
+    print("Monitoring comments on the issue...")
     while True:
         # Refresh issue details
         issue = repo.get_issue(issue.number)
-        print(f"Issue state: {issue.state}")
 
-        # Check for "yes" in comments
+        # Fetch comments
         comments = issue.get_comments()
         yes_found = any("yes" in comment.body.lower().strip() for comment in comments)
+        no_found = any("no" in comment.body.lower().strip() for comment in comments)
 
-        # Detailed debug logs
-        for comment in comments:
-            print(f"Comment: {comment.body}")
+        # If "yes" or "no" is found, close the issue
+        if yes_found or no_found:
+            print(f"Found {'yes' if yes_found else 'no'} comment. Closing issue...")
+            issue.edit(state="closed")
+            
+            if yes_found:
+                print("Proceeding to the next workflow step...")
+                exit(0)
+            else:
+                print("No further action for 'no' comment.")
+                exit(0)
 
-        if yes_found and issue.state == "closed":
-            print("Issue closed and 'yes' found. Exiting...")
-            exit(0)
+        # If no comments, check the timeout
+        if datetime.now() - start_time >= timeout:
+            print("No comments within 5 minutes. Closing issue...")
+            issue.edit(state="closed")
+            exit(1)
 
-        if issue.state == "closed" and not yes_found:
-            print("Issue closed but 'yes' not found. Waiting for 'yes' comment...")
-        elif not issue.state == "closed":
-            print("Issue still open. Rechecking in 60 seconds...")
-
-        time.sleep(60)
-
+        print("No relevant comments yet. Rechecking in 30 seconds...")
+        time.sleep(30)
 
 except Exception as e:
     print(f"Error: {e}")
