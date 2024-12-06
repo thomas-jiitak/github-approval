@@ -37,21 +37,23 @@ try:
 
         # Check for "yes" in comments
         comments = issue.get_comments()
+        yes_found = any("yes" in comment.body.lower().strip() for comment in comments)
+
+        # Detailed debug logs
         for comment in comments:
             print(f"Comment: {comment.body}")
-        yes_found = any("yes" in comment.body.lower() for comment in comments)
 
-        if issue.state == "closed":
-            print(f"Issue closed. 'Yes' found: {yes_found}")
-            if yes_found:
-                print("Proceeding to the next workflow step...")
-                exit(0)
-            else:
-                print("No 'yes' found. Exiting...")
-                exit(1)
+        if yes_found and issue.state == "closed":
+            print("Issue closed and 'yes' found. Exiting...")
+            exit(0)
 
-        print("Issue still open. Rechecking in 30 seconds...")
-        time.sleep(30)
+        if issue.state == "closed" and not yes_found:
+            print("Issue closed but 'yes' not found. Waiting for 'yes' comment...")
+        elif not issue.state == "closed":
+            print("Issue still open. Rechecking in 60 seconds...")
+
+        time.sleep(60)
+
 
 except Exception as e:
     print(f"Error: {e}")
