@@ -7,8 +7,8 @@ title = 'Bug Report'
 token = os.getenv('GITHUB_TOKEN')  # Using the automatically provided GITHUB_TOKEN
 #labels = os.getenv('INPUT_LABELS')
 labels = 'bug'
-assignees = os.getenv('INPUT_ASSIGNEES')
-body = os.getenv('INPUT_BODY')
+#assignees = os.getenv('INPUT_ASSIGNEES')
+#body = os.getenv('INPUT_BODY')
 
 # Check if title is provided
 if not title:
@@ -21,10 +21,11 @@ else:
     labels = []  # Default to an empty list if no labels
 
 # Validate and filter assignees
-if assignees:
-    valid_assignees = [user.strip() for user in assignees.split(',') if user.strip()]
-else:
-    valid_assignees = []  # Default to an empty list if no assignees
+
+# if assignees:
+#     valid_assignees = [user.strip() for user in assignees.split(',') if user.strip()]
+# else:
+#     valid_assignees = []  # Default to an empty list if no assignees
 
 # Use the GitHub token to authenticate
 github = Github(token)
@@ -36,8 +37,6 @@ repo = github.get_repo(os.getenv('GITHUB_REPOSITORY'))
 try:
     issue = repo.create_issue(
         title=title,
-        body=body,
-        assignees=valid_assignees,
         labels=labels
     )
     print(f"Issue created successfully: {issue.html_url}")
