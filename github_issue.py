@@ -2,9 +2,11 @@ import os
 from github import Github
 
 # Extracting all the input from environment variables
-title = os.getenv('INPUT_TITLE')
+#title = os.getenv('INPUT_TITLE')
+title = 'Bug Report'
 token = os.getenv('GITHUB_TOKEN')  # Using the automatically provided GITHUB_TOKEN
-labels = os.getenv('INPUT_LABELS')
+#labels = os.getenv('INPUT_LABELS')
+labels = 'bug'
 assignees = os.getenv('INPUT_ASSIGNEES')
 body = os.getenv('INPUT_BODY')
 
