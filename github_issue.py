@@ -32,12 +32,12 @@ try:
 
 ###################################################################
 
-
     # Define the timeout for no comments
     timeout = timedelta(minutes=5)
     start_time = datetime.now()
 
     print("Monitoring comments on the issue...")
+    print("Pending approval. Provide 'yes' or 'no' as a comment on the issue.")
 
     while True:
         # Refresh issue details
@@ -50,14 +50,14 @@ try:
 
         # If "yes" is found, close the issue and proceed with the workflow
         if yes_found:
-            print("Found 'yes' comment. Closing issue and continuing workflow...")
+            print("Approval received: 'yes'. Proceeding with the workflow...")
             issue.create_comment("Approval received: 'yes'. Closing the issue.")
             issue.edit(state="closed")
             exit(0)  # Exit with success status to continue the workflow
 
         # If "no" is found, close the issue and stop the workflow
         if no_found:
-            print("Found 'no' comment. Closing issue and stopping workflow...")
+            print("Approval denied: 'no'. Stopping the workflow...")
             issue.create_comment("Approval denied: 'no'. Closing the issue.")
             issue.edit(state="closed")
             exit(1)  # Exit with failure status to stop the workflow
@@ -66,17 +66,18 @@ try:
         if not comments:
             elapsed_time = datetime.now() - start_time
             if elapsed_time < timeout:
-                print("Pending approval, yes or no for approval...", end="\r", flush=True)
+                print("Pending approval. Waiting for 'yes' or 'no' comment...")
             else:
-                print("\nTime's up! No comments received. Closing the issue.")
+                print("No response within the timeout. Stopping the workflow...")
                 issue.create_comment("No response within the time frame. Closing the issue.")
                 issue.edit(state="closed")
                 exit(1)  # Exit with failure status to stop the workflow
         else:
-            print("Comment detected, waiting for 'yes' or 'no'. Checking comments again...")
+            print("Comment detected. Waiting for 'yes' or 'no' to decide...")
 
         # Sleep briefly to reduce API usage
         time.sleep(10)
+
 
 except Exception as e:
     print(f"Error: {e}")
