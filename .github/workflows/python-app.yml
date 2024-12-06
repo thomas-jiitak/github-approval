@@ -26,7 +26,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
+
       - name: Run Code
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          INPUT_TITLE: "Bug Report"
+          INPUT_BODY: "This is an auto-generated issue."
+          INPUT_LABELS: "bug"
         run: |
             python github_issue.py
