@@ -18,6 +18,6 @@ jobs:
     steps:
 
     - name: Manual Approval
-      uses: thomasvjoseph/manual-approval@v0.0.7
+      uses: thomasvjoseph/manual-approval@v0.0.8
       with:
         INPUT_LABELS: "bug,help wanted"
