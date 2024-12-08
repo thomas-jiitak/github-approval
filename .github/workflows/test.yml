@@ -18,7 +18,7 @@ jobs:
     steps:
 
     - name: Manual Approval
-      uses: thomasvjoseph/manual-approval@v0.0.3
+      uses: thomasvjoseph/manual-approval@v0.0.4
       with:
         INPUT_TITLE: "Test Issue"
         INPUT_BODY: "This is a test issue created via GitHub Action."
