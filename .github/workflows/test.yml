@@ -1,0 +1,25 @@
+name: Python application
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  id-token: write
+  issues: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Manual Approval
+      uses: thomasvjoseph/manual-approval@v0.0.3
+      with:
+        INPUT_TITLE: "Test Issue"
+        INPUT_BODY: "This is a test issue created via GitHub Action."
+        INPUT_LABELS: "bug,help wanted"
