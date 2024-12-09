@@ -18,6 +18,4 @@ jobs:
     steps:
 
     - name: Manual Approval
-      uses: thomasvjoseph/manual-approval@v0.1.4
-      with:
-        INPUT_ASSIGNEES: "murshid-jiitak"
+      uses: thomasvjoseph/manual-approval@v0.1.5
