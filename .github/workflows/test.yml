@@ -18,10 +18,11 @@ jobs:
     steps:
 
     - name: Manual Approval
-      uses: thomasvjoseph/manual-approval@v0.1.9
+      uses: thomasvjoseph/manual-approval@v1.0.0
       with:
-        INPUT_TIMEOUT: 5
+        INPUT_TIMEOUT: 10
         INPUT_ASSIGNEES: "murshid-jiitak,JAMES084"
+        INPUT_MIN_APPROVERS: 2
 
     - name: Run a one-line script
       run: echo Hello, world!
