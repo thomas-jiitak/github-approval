@@ -18,4 +18,4 @@ jobs:
     steps:
 
     - name: Manual Approval
-      uses: thomasvjoseph/manual-approval@v0.1.5
+      uses: thomasvjoseph/manual-approval@v0.1.6
