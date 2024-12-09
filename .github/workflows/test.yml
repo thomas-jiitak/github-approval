@@ -22,7 +22,7 @@ jobs:
       with:
         INPUT_TIMEOUT: 10
         INPUT_ASSIGNEES: "murshid-jiitak,JAMES084"
-        INPUT_MIN_APPROVERS: 2
+        INPUT_MIN_APPROVERS: "2"
 
     - name: Run a one-line script
       run: echo Hello, world!
