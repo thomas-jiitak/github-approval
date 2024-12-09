@@ -20,4 +20,4 @@ jobs:
     - name: Manual Approval
       uses: thomasvjoseph/manual-approval@v0.1.7
       with:
-        INPUT_ASSIGNEES: "murshid-jiitak,thomasvjoseph"
+        INPUT_ASSIGNEES: "murshid-jiitak,james084"
