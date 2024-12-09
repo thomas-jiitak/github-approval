@@ -18,7 +18,7 @@ jobs:
     steps:
 
     - name: Manual Approval
-      uses: thomasvjoseph/manual-approval@v1.0.0
+      uses: thomasvjoseph/manual-approval@v1.0.1
       with:
         INPUT_TIMEOUT: 10
         INPUT_ASSIGNEES: "murshid-jiitak,JAMES084"
