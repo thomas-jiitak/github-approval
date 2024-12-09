@@ -21,4 +21,4 @@ jobs:
       uses: thomasvjoseph/manual-approval@v0.1.9
       with:
         INPUT_TIMEOUT: 2
-        INPUT_ASSIGNEES: "murshid-jiitak,james084"
+        INPUT_ASSIGNEES: "murshid-jiitak,JAMES084"
